@@ -1,5 +1,5 @@
 <h1> OpenGL Concepts </h1>
 
-<b> Vertex Buffer: </b> An array of bytes of vertices on GPU VRAM. </br>
-<b> Draw Call: </b>: Read data from VRAM and draw it on the screen. </br>
-<b> Shader: </b> A program/code that runs on the GPU. </br>
+<h4> Vertex Buffer: </<h4> An array of bytes of vertices on GPU VRAM. </br>
+<h4> Draw Call: </<h4>: Read data from VRAM and draw it on the screen. </br>
+<h4> Shader: </<h4> A program/code that runs on the GPU. </br>
