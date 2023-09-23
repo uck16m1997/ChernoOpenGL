@@ -6,3 +6,6 @@
   <li> <b> GLAD </b> - Retrieves the implementation location of the OpenGL functions needed and stores them in function pointers for later use at run-time.</li>
 
 </ul>
+
+<h2> OPpenGL Docs </h2>
+https://docs.gl
