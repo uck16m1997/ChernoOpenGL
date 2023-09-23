@@ -7,5 +7,5 @@
 
 </ul>
 
-<h2> OPpenGL Docs </h2>
+<h2> OpenGL Docs </h2>
 https://docs.gl
