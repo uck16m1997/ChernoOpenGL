@@ -38,11 +38,19 @@ int main(void)
          0.5f,-0.5f
     };
 
-    // Generate 1 buffer and gives us id for the buffer as a reference
+    // Generate 1 buffer and gives us id for the buffer (as buffer is an out variable)
     unsigned int buffer;
     glGenBuffers(1, &buffer);
-    // Select that buffer as our current array buffer
+
+    // Enable the vertex attrib indexed at 0 
+    glEnableVertexAttribArray(0);
+    // 0 for first attribute, 2 floats per vertex, Don't normalize, Size of all attributes until next vertex, Size of attributes until our specified attribute
+    glVertexAttribPointer(0,2, GL_FLOAT,GL_FALSE,sizeof(float) * 2,0);
+
+    // Select/Bind that buffer as our current array buffer
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
+
+    // To our array buffer, that will contain size of 6 floats in bytes, copy they array of position array,  we won't change this data(STATIC) and read it for drawing (DRAW)
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), position,GL_STATIC_DRAW);
      
     /* Game Loop until the user closes the window */
