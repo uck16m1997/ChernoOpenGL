@@ -22,6 +22,9 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\glad.c" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\Basic.shader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
