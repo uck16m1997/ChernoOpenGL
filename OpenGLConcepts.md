@@ -20,3 +20,6 @@ Fragment Shader runs once for each pixel that needs to be rasterized(drawn on sc
 
 <h3> Vertex Shader vs Fragment Shader </h3> 
 From an optimization perspective FragmentShader will likely be called more often then Vertex Shader as there will be more pixels than vertices surrounding. Programmers should be more mindful about about keeping Fragment Shader efficient and moving calculations to vertex shader if possible and pass data down the pipeline.
+
+<h4> Index Buffer: </h4> 
+An array of indeces for vertices on GPU VRAM. Used to not duplicate vertex data in vertex buffer and refer them from index to preserve memory. </br>
