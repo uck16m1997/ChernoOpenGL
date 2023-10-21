@@ -58,7 +58,7 @@ static unsigned int CompileShader(unsigned int type, const std::string& source) 
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 
 		// Alloca is a C function that lets us allocate to stack dynamically 
-		char* message =(char*) malloc(length*sizeof(char));
+		char* message =(char*) alloca(length*sizeof(char));
 
 		glGetShaderInfoLog(id, length, &length, message);
 		std::cout << "Failed to compile" << (type ==GL_VERTEX_SHADER ? "vertex" : "fragmet") << " shader!" << std::endl;
@@ -95,6 +95,15 @@ static int CreateShader(const std::string& vertexShader, const std::string& frag
 	return program;
 }
 
+static unsigned int* CreateBuffer(int n) {
+	// Generate n buffer and gives us id for the buffer (as buffer is an out variable)
+	unsigned int* buffer = new unsigned int[n];
+	glGenBuffers(n, buffer);
+
+	return buffer;
+
+}
+
 int main(void)
 {
 	GLFWwindow* window;
@@ -125,27 +134,32 @@ int main(void)
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	// Positions of vertexes
-	float position[6] = {
-		-0.5f,-0.5f,
-		 0.0f,0.5f,
-		 0.5f,-0.5f
+	float position[] = {
+		-0.5f,-0.5f, //0
+		 0.5f,-0.5f, //1
+		 0.5f, 0.5f, //2
+		-0.5f, 0.5f, //3
 	};
 
-	// Generate 1 buffer and gives us id for the buffer (as buffer is an out variable)
-	unsigned int buffer;
-	glGenBuffers(1, &buffer);
-	
-	// Select/Bind that buffer as our current array buffer
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	unsigned int indices[] = {
+		0,1,2,
+		2,3,0,
+	};
 
-	// To our array buffer, that will contain size of 6 floats in bytes, copy they array of position array,  we won't change this data(STATIC) and read it for drawing (DRAW)
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), position, GL_STATIC_DRAW);
+	unsigned int arrayBuffer = *CreateBuffer(1);
 
-	// Enable the vertex attrib indexed at 0 
+	// Bind arrayBuffer as main ArrayBuffer and 
+	// Define Layout (4 vertex 2 floats in bytes, copy the values from position array, data won't change(STATIC) read for drawing (DRAW)
+	glBindBuffer(GL_ARRAY_BUFFER, arrayBuffer);
+	glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), position, GL_STATIC_DRAW);
+
+	// Enable and Define the vertexAttributes Layout inside the buffer (Starting from array index 0, 2 Floats,don't normalize, 2 floats bytes per vertex, 0th attribute)
 	glEnableVertexAttribArray(0);
-
-	// 0 for first attribute, 2 floats per vertex, Don't normalize, Size of all attributes until next vertex, Size of attributes until our specified attribute
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+
+	unsigned int indexBuffer = *CreateBuffer(1);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
 
@@ -161,8 +175,8 @@ int main(void)
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// Draw 3 vertices starting from index 0
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		// Draw Elements from indices
+		glDrawElements(GL_TRIANGLES,  6, GL_UNSIGNED_INT,nullptr);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
